@@ -180,8 +180,8 @@ alt.data_transformers.disable_max_rows()
 np.random.seed(0)
 data = pd.DataFrame({
     'date': pd.date_range('1990-01-01', freq='Y', periods=10),
-    'FAO_yied': np.random.randn(10).cumsum()
-    'Simulation': np.random.randn(10).cumsum()
+    'FAO_yied': np.random.randn(10).cumsum(),
+    'Simulation': np.random.randn(10).cumsum(),
     'Predicted': np.random.randn(10).cumsum()
 })
 
