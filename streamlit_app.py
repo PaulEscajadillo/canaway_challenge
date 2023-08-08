@@ -1,41 +1,9 @@
 import streamlit as st
 import datetime
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 from streamlit_echarts import st_echarts
-def render_pie_simple():
-    options = {
-        "title": {"text": "某站点用户访问来源", "subtext": "纯属虚构", "left": "center"},
-        "tooltip": {"trigger": "item"},
-        "legend": {"orient": "vertical", "left": "left",},
-        "series": [
-            {
-                "name": "访问来源",
-                "type": "pie",
-                "radius": "50%",
-                "data": [
-                    {"value": 1048, "name": "搜索引擎"},
-                    {"value": 735, "name": "直接访问"},
-                    {"value": 580, "name": "邮件营销"},
-                    {"value": 484, "name": "联盟广告"},
-                    {"value": 300, "name": "视频广告"},
-                ],
-                "emphasis": {
-                    "itemStyle": {
-                        "shadowBlur": 10,
-                        "shadowOffsetX": 0,
-                        "shadowColor": "rgba(0, 0, 0, 0.5)",
-                    }
-                },
-            }
-        ],
-    }
-    st_echarts(
-        options=options, height="600px",
-    )
-render_pie_simple()
-
 
 st.header("Ventas")
 
@@ -149,64 +117,58 @@ grouped_by_coupons['Usados'] = grouped_by_coupons['count_x']
 
 grouped_by_coupons.loc[:, ['Cupon', 'Porcentaje', 'Usados', 'Variacion']]
 
+data = []
+for index, row in grouped_by_coupons.iterrows():
+    data.append({'value': row['Usados'], 'name': row['Cupon']})
+    
+def render_pie_simple():
+    options = {
+        "title": {"text": "", "subtext": "", "left": "center"},
+        "tooltip": {"trigger": "item"},
+        "legend": {"orient": "vertical", "left": "right",},
+        "series": [
+            {
+                "name": "",
+                "type": "pie",
+                "radius": "50%",
+                "data": data,
+                "emphasis": {
+                    "itemStyle": {
+                        "shadowBlur": 10,
+                        "shadowOffsetX": 0,
+                        "shadowColor": "rgba(0, 0, 0, 0.5)",
+                    }
+                },
+            }
+        ],
+    }
+    st_echarts(
+        options=options, height="600px",
+    )
+render_pie_simple()
+
+
 st.subheader("Ventas")
 
 #define figure and axes
-fig, ax = plt.subplots()
+"fig, ax = plt.subplots()
 
 #hide the axes
-fig.patch.set_visible(False)
-ax.axis('off')
-ax.axis('tight')
+#fig.patch.set_visible(False)
+#ax.axis('off')
+#ax.axis('tight')
 
 #create data
-df = pd.DataFrame(current_cycle_sales_g1, columns=['order_id', 'paid_date', 'price', 'sales_person', 'billing_country','coupon', 'order_item', 'course_category'])
+#df = pd.DataFrame(current_cycle_sales_g1, columns=['order_id', 'paid_date', 'price', 'sales_person', 'billing_country','coupon', 'order_item', 'course_category'])
 
 #create table
-table = ax.table(cellText=df.values, colLabels=['Order ID', 'Fecha', 'Precio (USD)', 'Asesor', 'País', 'Cupón', 'Item', 'Categoría'], loc='center')
+#table = ax.table(cellText=df.values, colLabels=['Order ID', 'Fecha', 'Precio (USD)', 'Asesor', 'País', 'Cupón', 'Item', 'Categoría'], loc='center')
 
 #display table
-fig.tight_layout()
-plt.show()
+#fig.tight_layout()
+#plt.show()
 
 
 
 
-#create values for table
-table_data=[
-    ["Player 1", 30],
-    ["Player 2", 20],
-    ["Player 3", 33],
-    ["Player 4", 25],
-    ["Player 5", 12]
-]
 
-#create table
-table = ax.table(cellText=table_data, loc='center')
-
-#modify table
-table.set_fontsize(14)
-table.scale(1,4)
-ax.axis('off')
-
-#display table
-plt.show()
-#create values for table
-table_data=[
-    ["Player 1", 30],
-    ["Player 2", 20],
-    ["Player 3", 33],
-    ["Player 4", 25],
-    ["Player 5", 12]
-]
-
-#create table
-table = ax.table(cellText=table_data, loc='center')
-
-#modify table
-table.set_fontsize(14)
-table.scale(1,4)
-ax.axis('off')
-
-#display table
-plt.show()
