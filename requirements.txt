@@ -1,8 +1,4 @@
 pandas
-scipy
 numpy
-ipywidgets
 matplotlib
-mplsoccer
 streamlit
-scikit-learn
