@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 import pandas as pd
+import matplotlib.pyplot as plt
 
 st.header("Ventas")
 
@@ -115,3 +116,22 @@ grouped_by_coupons['Usados'] = grouped_by_coupons['count_x']
 grouped_by_coupons.loc[:, ['Cupon', 'Porcentaje', 'Usados', 'Variacion']]
 
 st.subheader("Ventas")
+
+#define figure and axes
+fig, ax = plt.subplots()
+
+#hide the axes
+fig.patch.set_visible(False)
+ax.axis('off')
+ax.axis('tight')
+
+#create data
+df = pd.DataFrame(current_cycle_sales_g1, columns=['order_id', 'paid_date', 'price', 'sales_person', 'billing_country','coupon', 'order_item', 'course_category'])
+
+#create table
+table = ax.table(cellText=df.values, colLabels=['Order ID', 'Fecha', 'Precio (USD)', 'Asesor', 'País', 'Cupón', 'Item', 'Categoría'], loc='center')
+
+#display table
+fig.tight_layout()
+plt.show()
+
