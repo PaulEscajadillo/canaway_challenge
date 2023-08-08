@@ -2,6 +2,7 @@ import streamlit as st
 import datetime
 import pandas as pd
 #import matplotlib.pyplot as plt
+import altair as alt
 
 from streamlit_echarts import st_echarts
 
@@ -143,7 +144,7 @@ def render_pie_simple():
         ],
     }
     st_echarts(
-        options=options, height="600px",
+        options=options, height="500px",
     )
 render_pie_simple()
 
@@ -169,6 +170,33 @@ df
 #display table
 #fig.tight_layout()
 #plt.show()
+
+
+
+
+
+alt.data_transformers.disable_max_rows()
+
+np.random.seed(0)
+data = pd.DataFrame({
+    'date': pd.date_range('1990-01-01', freq='Y', periods=10),
+    'FAO_yied': np.random.randn(10).cumsum()
+    'Simulation': np.random.randn(10).cumsum()
+    'Predicted': np.random.randn(10).cumsum()
+})
+
+prediction_table = pd.melt(data, id_vars=['date'], value_vars=['FAO_yied', 'Predicted', 'Simulation'])
+
+chart = alt.Chart(prediction_table2, title='Simulated (attainable) and predicted yield ').mark_bar(
+    opacity=1,
+    ).encode(
+    column = alt.Column('date:O', spacing = 5, header = alt.Header(labelOrient = "bottom")),
+    x =alt.X('variable', sort = ["Actual_FAO", "Predicted", "Simulated"],  axis=None),
+    y =alt.Y('value:Q'),
+    color= alt.Color('variable')
+).configure_view(stroke='transparent')
+
+chart.display()
 
 
 
