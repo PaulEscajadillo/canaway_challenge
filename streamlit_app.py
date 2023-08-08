@@ -108,8 +108,12 @@ st.subheader("VENTAS POR ASESOR - LEADERBOARD")
 
 sales_per_agent_current = current_cycle_sales_g1.groupby('salesperson', as_index="False")['price'].sum().reset_index()
 sales_per_agent_previous = previous_cycle_sales_g1.groupby('salesperson', as_index="False")['price'].sum().reset_index()
+#sales_per_agent_current
+#sales_per_agent_previous
+#cambio = (sales_per_agent_current['price']-sales_per_agent_previous['price'])*100/sales_per_agent_previous['price']
+#cambio
 grouped_sales_per_agent = sales_per_agent_current.merge(sales_per_agent_previous, on="salesperson", how="left")
-grouped_sales_per_agent['Cambio'] = (grouped_sales_per_agent['price_x']-grouped_sales_per_agent['price_y']*100)/grouped_sales_per_agent['price_y']
+grouped_sales_per_agent['Cambio'] = ((grouped_sales_per_agent['price_x']-grouped_sales_per_agent['price_y']*100)/grouped_sales_per_agent['price_y']).round(2).astype(str).add('%')
 grouped_sales_per_agent['Asesor'] = grouped_sales_per_agent['salesperson']
 grouped_sales_per_agent['Ventas'] = grouped_sales_per_agent['price_x']
 data = pd.DataFrame(grouped_sales_per_agent, columns=['Asesor', 'Ventas', 'Cambio'])
