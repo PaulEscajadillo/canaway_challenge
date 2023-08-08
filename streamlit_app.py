@@ -151,7 +151,7 @@ render_pie_simple()
 st.subheader("Ventas")
 
 #define figure and axes
-"fig, ax = plt.subplots()
+#"fig, ax = plt.subplots()
 
 #hide the axes
 #fig.patch.set_visible(False)
