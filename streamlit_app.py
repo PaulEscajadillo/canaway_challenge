@@ -99,9 +99,9 @@ sales_per_day_previous_cycle = previous_cycle_sales_g1.groupby('paid_date').sum(
 #indexes = sales_per_day_current_cycle.index.values.flatten()
 #indexes.shape
 
-data = {"Previo":sales_per_day_previous_cycle, "Actual":sales_per_day_current_cycle} 
+data = {"Previo":sales_per_day_previous_cycle['price'], "Actual":sales_per_day_current_cycle['price']} 
 df = pd.DataFrame(data)
-df
+#df
 st.bar_chart(data=df)
 
 st.subheader("VENTAS POR ASESOR - LEADERBOARD")
