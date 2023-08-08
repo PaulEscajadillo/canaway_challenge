@@ -88,9 +88,8 @@ st.write(previous_sales_string)
 sales_per_day_current_cycle = current_cycle_sales_g1.groupby('paid_date').sum()[['price']]
 sales_per_day_previous_cycle = previous_cycle_sales_g1.groupby('paid_date').sum()[['price']]
 
-
-sales_per_day_current_cycle.shape
-sales_per_day_previous_cycle.shape
+#sales_per_day_current_cycle.shape
+#sales_per_day_previous_cycle.shape
 
 #sales_per_day_current_cycle
 #sales_per_day_previous_cycle
@@ -114,8 +113,9 @@ total_coupons = grouped_by_coupons['count_x'].sum()
 #total_coupons
 grouped_by_coupons['Porcentaje'] = (grouped_by_coupons['count_x']*100/total_coupons).round(2).astype(str).add('%')
 grouped_by_coupons['Usados'] = grouped_by_coupons['count_x']
-
-grouped_by_coupons.loc[:, ['Cupon', 'Porcentaje', 'Usados', 'Variacion']]
+df = pd.DataFrame(grouped_by_coupons, columns=['Cupon', 'Porcentaje', 'Usados', 'Variacion'])
+df
+#grouped_by_coupons.loc[:, ['Cupon', 'Porcentaje', 'Usados', 'Variacion']]
 
 data = []
 for index, row in grouped_by_coupons.iterrows():
@@ -149,6 +149,8 @@ render_pie_simple()
 
 
 st.subheader("Ventas")
+df = pd.DataFrame(current_cycle_sales_g1, columns=['order_id', 'paid_date', 'price', 'salesperson', 'billing_country','coupon', 'order_item', 'course_category'])
+df
 
 #define figure and axes
 #"fig, ax = plt.subplots()
@@ -159,7 +161,7 @@ st.subheader("Ventas")
 #ax.axis('tight')
 
 #create data
-#df = pd.DataFrame(current_cycle_sales_g1, columns=['order_id', 'paid_date', 'price', 'sales_person', 'billing_country','coupon', 'order_item', 'course_category'])
+#df = pd.DataFrame(current_cycle_sales_g1, columns=['order_id', 'paid_date', 'price', 'salesperson', 'billing_country','coupon', 'order_item', 'course_category'])
 
 #create table
 #table = ax.table(cellText=df.values, colLabels=['Order ID', 'Fecha', 'Precio (USD)', 'Asesor', 'País', 'Cupón', 'Item', 'Categoría'], loc='center')
