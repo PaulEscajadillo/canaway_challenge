@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import pandas as pd
 #import matplotlib.pyplot as plt
-import altair as alt
+#import altair as alt
 
 from streamlit_echarts import st_echarts
 
@@ -99,7 +99,24 @@ sales_per_day_previous_cycle = previous_cycle_sales_g1.groupby('paid_date').sum(
 #indexes = sales_per_day_current_cycle.index.values.flatten()
 #indexes.shape
 
-st.title("Uso de cupones")
+data = {"Previo":sales_per_day_previous_cycle, "Actual":sales_per_day_current_cycle} 
+df = pd.DataFrame(data)
+df
+st.bar_chart(data=df)
+
+st.subheader("VENTAS POR ASESOR - LEADERBOARD")
+
+sales_per_agent_current = current_cycle_sales_g1.groupby('salesperson', as_index="False")['price'].sum().reset_index()
+sales_per_agent_previous = previous_cycle_sales_g1.groupby('salesperson', as_index="False")['price'].sum().reset_index()
+grouped_sales_per_agent = sales_per_agent_current.merge(sales_per_agent_previous, on="salesperson", how="left")
+grouped_sales_per_agent['Cambio'] = (grouped_sales_per_agent['price_x']-grouped_sales_per_agent['price_y']*100)/grouped_sales_per_agent['price_y']
+grouped_sales_per_agent['Asesor'] = grouped_sales_per_agent['salesperson']
+grouped_sales_per_agent['Ventas'] = grouped_sales_per_agent['price_x']
+data = pd.DataFrame(grouped_sales_per_agent, columns=['Asesor', 'Ventas', 'Cambio'])
+st.table(data) 
+
+
+st.subheader("Uso de cupones")
 current_cycle_sales_g1_grouped_by_coupons = current_cycle_sales_g1.groupby('coupon', as_index="False").agg(count=("coupon", "count"))
 #current_cycle_sales_g1_grouped_by_coupons
 previous_cycle_sales_g1_grouped_by_coupons = previous_cycle_sales_g1.groupby('coupon', as_index="False").agg(count=("coupon", "count"))
@@ -171,33 +188,6 @@ df
 #display table
 #fig.tight_layout()
 #plt.show()
-
-
-
-
-
-alt.data_transformers.disable_max_rows()
-
-np.random.seed(0)
-data = pd.DataFrame({
-    'date': pd.date_range('1990-01-01', freq='Y', periods=10),
-    'FAO_yied': np.random.randn(10).cumsum(),
-    'Simulation': np.random.randn(10).cumsum(),
-    'Predicted': np.random.randn(10).cumsum()
-})
-
-prediction_table = pd.melt(data, id_vars=['date'], value_vars=['FAO_yied', 'Predicted', 'Simulation'])
-
-chart = alt.Chart(prediction_table2, title='Simulated (attainable) and predicted yield ').mark_bar(
-    opacity=1,
-    ).encode(
-    column = alt.Column('date:O', spacing = 5, header = alt.Header(labelOrient = "bottom")),
-    x =alt.X('variable', sort = ["Actual_FAO", "Predicted", "Simulated"],  axis=None),
-    y =alt.Y('value:Q'),
-    color= alt.Color('variable')
-).configure_view(stroke='transparent')
-
-chart.display()
 
 
 
